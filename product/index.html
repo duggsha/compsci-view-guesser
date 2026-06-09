@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Guesser</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>View Guesser</h1>
+    <p class="tagline">Which music video has more YouTube views?</p>
+
+    <section id="start" class="panel">
+      <h2>Choose Mode</h2>
+      <label><input type="radio" name="mode" value="normal" checked> Normal - keep your score</label>
+      <label><input type="radio" name="mode" value="streak"> Streak - one wrong answer resets score to 0</label>
+      <button id="playBtn">Play</button>
+    </section>
+
+    <section id="game" class="panel hidden">
+      <p>Score: <span id="score">0</span> | Round: <span id="round">0</span></p>
+      <p id="prompt">Watch both videos, then guess which has more views.</p>
+      <div class="videos">
+        <article class="video-card" data-side="A">
+          <h3 id="titleA">Video A</h3>
+          <iframe id="frameA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <button class="guess">This one has more views</button>
+        </article>
+        <article class="video-card" data-side="B">
+          <h3 id="titleB">Video B</h3>
+          <iframe id="frameB" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <button class="guess">This one has more views</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="result" class="panel hidden">
+      <h2 id="resultTitle"></h2>
+      <p id="resultDetail"></p>
+      <p>Score: <span id="resultScore">0</span></p>
+    </section>
+
+    <section id="again" class="panel hidden">
+      <h2>Play again?</h2>
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </section>
+
+    <section id="end" class="panel hidden">
+      <h2>Thanks for playing!</h2>
+      <p id="finalStats"></p>
+      <button id="restartBtn">Play from start</button>
+    </section>
+
+    <p id="error" class="error hidden"></p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
