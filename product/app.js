@@ -11,6 +11,7 @@ let round = 0;
 let correct = 0;
 let wrong = 0;
 let current = null;
+let resultTimer = null;
 
 // Show one screen and hide all the others
 function show(name) {
@@ -54,6 +55,36 @@ function winner() {
   return current.videoA.views >= current.videoB.views ? "A" : "B";
 }
 
+// Build and show the final stats screen
+function showFinalStats() {
+  if (resultTimer) clearTimeout(resultTimer);
+  const pct = round ? Math.round((correct / round) * 100) : 0;
+  $("finalStats").innerHTML =
+    `rounds played: <strong>${round}</strong><br>` +
+    `correct: <strong>${correct}</strong> | wrong: <strong>${wrong}</strong><br>` +
+    `final score: <strong>${score}</strong><br>` +
+    `accuracy: <strong>${pct}%</strong><br>` +
+    `mode: <strong>${mode}</strong>`;
+  show("end");
+}
+
+// After showing the result, normal mode auto-continues; streak mode asks to play again
+function afterResult() {
+  if (resultTimer) clearTimeout(resultTimer);
+  if (mode === "normal") {
+    resultTimer = setTimeout(async () => {
+      try {
+        await loadRound();
+      } catch (e) {
+        $("error").textContent = e.message;
+        $("error").classList.remove("hidden");
+      }
+    }, 1400);
+  } else {
+    resultTimer = setTimeout(() => show("again"), 1400);
+  }
+}
+
 // Run when the user picks a video; update score and show the result
 function handleGuess(side) {
   document.querySelectorAll(".guess").forEach((b) => (b.disabled = true));
@@ -81,7 +112,7 @@ function handleGuess(side) {
   $("score").textContent = score;
   $("resultScore").textContent = score;
   show("result");
-  setTimeout(() => show("again"), 1400);
+  afterResult();
 }
 
 // Start button: read the chosen mode, reset stats, and load the first round
@@ -115,17 +146,11 @@ $("yesBtn").onclick = async () => {
   }
 };
 
-// No button: show final stats and end the game
-$("noBtn").onclick = () => {
-  const pct = round ? Math.round((correct / round) * 100) : 0;
-  $("finalStats").innerHTML =
-    `rounds played: <strong>${round}</strong><br>` +
-    `correct: <strong>${correct}</strong> | wrong: <strong>${wrong}</strong><br>` +
-    `final score: <strong>${score}</strong><br>` +
-    `accuracy: <strong>${pct}%</strong><br>` +
-    `mode: <strong>${mode}</strong>`;
-  show("end");
-};
+// No button: show final stats and end the game (streak mode)
+$("noBtn").onclick = () => showFinalStats();
+
+// End game button on the play screen (normal mode)
+$("quitBtn").onclick = () => showFinalStats();
 
 // Restart button: go back to the start screen to pick a mode again
 $("restartBtn").onclick = () => show("start");
