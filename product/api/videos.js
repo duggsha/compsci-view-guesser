@@ -1,3 +1,5 @@
+// Pool of music videos used for each round
+// id = YouTube video id, title = song name, views = fallback count if API key is missing
 module.exports = [
   { id: "kJQP7kiw5Fk", title: "Despacito", views: 8800000000 },
   { id: "XqZsoesa55w", title: "Baby Shark Dance", views: 15000000000 },

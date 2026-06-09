@@ -1,6 +1,10 @@
+// Shortcut to grab an element from the page by its id
 const $ = (id) => document.getElementById(id);
+
+// All screen sections we swap between during the game
 const panels = ["start", "game", "result", "again", "end"];
 
+// Game state kept in memory while the page is open (not saved anywhere)
 let mode = "normal";
 let score = 0;
 let round = 0;
@@ -8,19 +12,23 @@ let correct = 0;
 let wrong = 0;
 let current = null;
 
+// Show one screen and hide all the others
 function show(name) {
   panels.forEach((p) => $(p).classList.toggle("hidden", p !== name));
   $("error").classList.add("hidden");
 }
 
+// Format view counts with commas (e.g. 6400000000 -> 6,400,000,000)
 function fmt(n) {
   return Number(n).toLocaleString();
 }
 
+// Load a YouTube video into an iframe using its video id
 function setFrame(id, videoId) {
   $(id).src = `https://www.youtube.com/embed/${videoId}`;
 }
 
+// Fetch a new pair of videos from the server and display them
 async function loadRound() {
   $("error").classList.add("hidden");
   document.querySelectorAll(".guess").forEach((b) => (b.disabled = true));
@@ -41,10 +49,12 @@ async function loadRound() {
   show("game");
 }
 
+// Figure out which video (A or B) has more views
 function winner() {
   return current.videoA.views >= current.videoB.views ? "A" : "B";
 }
 
+// Run when the user picks a video; update score and show the result
 function handleGuess(side) {
   document.querySelectorAll(".guess").forEach((b) => (b.disabled = true));
   const win = winner();
@@ -74,6 +84,7 @@ function handleGuess(side) {
   setTimeout(() => show("again"), 1400);
 }
 
+// Start button: read the chosen mode, reset stats, and load the first round
 $("playBtn").onclick = async () => {
   mode = document.querySelector('input[name="mode"]:checked').value;
   score = 0;
@@ -89,10 +100,12 @@ $("playBtn").onclick = async () => {
   }
 };
 
+// Wire up both "this one has more views" buttons on the video cards
 document.querySelectorAll(".guess").forEach((btn) => {
   btn.onclick = () => handleGuess(btn.closest(".video-card").dataset.side);
 });
 
+// Yes button: load another round with the same mode and score
 $("yesBtn").onclick = async () => {
   try {
     await loadRound();
@@ -102,6 +115,7 @@ $("yesBtn").onclick = async () => {
   }
 };
 
+// No button: show final stats and end the game
 $("noBtn").onclick = () => {
   const pct = round ? Math.round((correct / round) * 100) : 0;
   $("finalStats").innerHTML =
@@ -113,4 +127,5 @@ $("noBtn").onclick = () => {
   show("end");
 };
 
+// Restart button: go back to the start screen to pick a mode again
 $("restartBtn").onclick = () => show("start");
