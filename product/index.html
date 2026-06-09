@@ -8,49 +8,86 @@
 </head>
 <body>
   <main>
-    <h1>View Guesser</h1>
-    <p class="tagline">Which music video has more YouTube views?</p>
+    <header class="site-header">
+      <p class="eyebrow">year end project</p>
+      <h1>View Guesser</h1>
+      <p class="tagline">two songs. one question. who actually won the internet?</p>
+    </header>
 
-    <section id="start" class="panel">
-      <h2>Choose Mode</h2>
-      <label><input type="radio" name="mode" value="normal" checked> Normal - keep your score</label>
-      <label><input type="radio" name="mode" value="streak"> Streak - one wrong answer resets score to 0</label>
-      <button id="playBtn">Play</button>
+    <section id="start" class="card">
+      <h2>how do you want to play?</h2>
+      <div class="mode-pick">
+        <label class="mode-option">
+          <input type="radio" name="mode" value="normal" checked>
+          <span class="mode-label">Normal</span>
+          <span class="mode-note">miss one? you keep your points. chill run.</span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="mode" value="streak">
+          <span class="mode-label">Streak</span>
+          <span class="mode-note">one wrong guess and your score goes back to zero.</span>
+        </label>
+      </div>
+      <button id="playBtn" class="btn-main">let's go</button>
     </section>
 
-    <section id="game" class="panel hidden">
-      <p>Score: <span id="score">0</span> | Round: <span id="round">0</span></p>
-      <p id="prompt">Watch both videos, then guess which has more views.</p>
+    <section id="game" class="card hidden">
+      <div class="scoreboard">
+        <div class="stat">
+          <span class="stat-label">score</span>
+          <span class="stat-value" id="score">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">round</span>
+          <span class="stat-value" id="round">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">mode</span>
+          <span class="stat-value small" id="modeLabel">normal</span>
+        </div>
+      </div>
+
+      <p id="prompt" class="prompt">watch a bit of both, then call it. which video has more views?</p>
+
       <div class="videos">
         <article class="video-card" data-side="A">
-          <h3 id="titleA">Video A</h3>
+          <div class="video-top">
+            <span class="pick-tag">A</span>
+            <h3 id="titleA">Video A</h3>
+          </div>
           <iframe id="frameA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          <button class="guess">This one has more views</button>
+          <button class="guess btn-pick">this one got more views</button>
         </article>
-        <article class="video-card" data-side="B">
-          <h3 id="titleB">Video B</h3>
+        <article class="video-card tilt" data-side="B">
+          <div class="video-top">
+            <span class="pick-tag">B</span>
+            <h3 id="titleB">Video B</h3>
+          </div>
           <iframe id="frameB" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          <button class="guess">This one has more views</button>
+          <button class="guess btn-pick">nah, this one did</button>
         </article>
       </div>
     </section>
 
-    <section id="result" class="panel hidden">
+    <section id="result" class="card hidden">
       <h2 id="resultTitle"></h2>
-      <p id="resultDetail"></p>
-      <p>Score: <span id="resultScore">0</span></p>
+      <p id="resultDetail" class="result-copy"></p>
+      <p class="score-line">your score right now: <strong id="resultScore">0</strong></p>
     </section>
 
-    <section id="again" class="panel hidden">
-      <h2>Play again?</h2>
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
+    <section id="again" class="card hidden">
+      <h2>run it back?</h2>
+      <p class="subcopy">same mode. new pair of videos.</p>
+      <div class="btn-row">
+        <button id="yesBtn" class="btn-main">yeah</button>
+        <button id="noBtn" class="btn-ghost">i'm done</button>
+      </div>
     </section>
 
-    <section id="end" class="panel hidden">
-      <h2>Thanks for playing!</h2>
-      <p id="finalStats"></p>
-      <button id="restartBtn">Play from start</button>
+    <section id="end" class="card hidden">
+      <h2>good game</h2>
+      <p id="finalStats" class="final-stats"></p>
+      <button id="restartBtn" class="btn-main">start over</button>
     </section>
 
     <p id="error" class="error hidden"></p>
